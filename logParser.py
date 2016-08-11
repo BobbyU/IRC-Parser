@@ -26,7 +26,8 @@ def main():
 	for key in nameFreq:
 		nameCount[key] = float(nameFreq[key]) / totalTalks
 	for key in nameFreq:
-		print("{}: {} ({:.2%})".format(key.ljust(20), nameFreq[key], nameCount[key]) )
+		if nameCount[key] > 0.01:
+			print("{}: {} ({:.2%})".format(key.ljust(20), nameFreq[key], nameCount[key]) )
 	
 	print("total talks: {}".format(totalTalks) )
 
