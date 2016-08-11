@@ -19,7 +19,7 @@ def main():
 				nameFreq[name] = 1       #init their place in the dict
 				totalTalks += 1
 		
-		if re.search('throb', line):     #count those throbbers
+		if re.search('throb', line, flags=re.IGNORECASE):     #count those throbbers
 			throbCount += 1
 	
 	for key in nameFreq:    #calculate percentages
