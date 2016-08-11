@@ -1,8 +1,9 @@
 import re
+import os
 import operator
 
 def main():
-	infile = open('#dtdgb.log', 'r')
+	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#dtdgb.log'), 'r')
 	nameFreq = {}
 	nameCount = {}
 	totalTalks = 0
