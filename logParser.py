@@ -11,7 +11,7 @@ def main():
 	for line in infile:    #for each line in the log
 		res = re.search("<.*?>", line)   #use regex to find the speaker
 		if res:                          #if there is one...
-			name = res.group(0)[1:-1]    #remove the "brackets" from the string
+			name = res.group(0)[1:-1].lower()    #remove the "brackets" from the string
 			if name in nameFreq:         #if the name is already in the dict
 				nameFreq[name] += 1      #then add one to their 
 				totalTalks += 1
@@ -21,8 +21,6 @@ def main():
 		
 		if re.search('throb', line):     #count those throbbers
 			throbCount += 1
-		
-	print("Throb Count: {}\n".format(throbCount) )    # print throb count
 	
 	for key in nameFreq:    #calculate percentages
 		nameCount[key] = float(nameFreq[key]) / totalTalks
@@ -30,6 +28,7 @@ def main():
 		if nameCount[key] > 0.01:    #if they've talked enough
 			print("{}: {} ({:.2%})".format(key.ljust(20), nameFreq[key], nameCount[key]) )
 	
-	print("total talks: {}".format(totalTalks) )
+	print("total talks: {}".format(totalTalks) )      # print total talks
+	print("Throb Count: {}\n".format(throbCount) )    # print throb count
 
 main()
