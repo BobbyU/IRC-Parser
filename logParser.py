@@ -20,12 +20,12 @@ def main():
 				totalTalks += 1
 		
 		if re.search('throb', line, flags=re.IGNORECASE):     #count those throbbers
-			throbCount += 1
+			throbCount += line.lower().count('throb')
 	
 	for key in nameFreq:    #calculate percentages
 		nameCount[key] = float(nameFreq[key]) / totalTalks
 	for i in range(0,len(nameFreq)):    #print each name and values
-		maxKey = max(nameFreq, key=nameFreq.get)
+		maxKey = max(nameFreq, key=nameFreq.get)    #get the entry with the most talks
 		if nameCount[maxKey] > 0.01:    #if they've talked enough
 			print("{}: {} ({:.2%})".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey]) )
 			del nameCount[maxKey]
