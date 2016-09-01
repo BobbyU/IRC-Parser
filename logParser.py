@@ -26,10 +26,12 @@ def main():
 	
 	for key in nameFreq:    #calculate percentages
 		nameCount[key] = float(nameFreq[key]) / totalTalks
+		
+	print("{} {}  Throbs".format("Name".ljust(20), "Talks".ljust(13)))
 	for i in range(0,len(nameFreq)):    #print each name and values
 		maxKey = max(nameFreq, key=nameFreq.get)    #get the entry with the most talks
 		if nameCount[maxKey] > 0.01:    #if they've talked enough
-			print("{}: {} ({:.2%}) Throbs: {}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], throbCounter[maxKey]) )
+			print("{} {:4} ({:2.2%}) {:3}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], throbCounter[maxKey]) )
 			del nameCount[maxKey]
 			del nameFreq[maxKey]
 			del throbCounter[maxKey]
