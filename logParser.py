@@ -1,6 +1,7 @@
 import re
 import os
 import operator
+import datetime
 
 def main():
 	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#dtdgb.log'), 'r')    #find log file
@@ -14,6 +15,7 @@ def main():
 	throbCounter = {}
 	roostCounter = {}
 	#bPipe = 0
+	print(datetime.datetime.today())
 	for line in infile:    #for each line in the log
 		res = re.search("<.*?>", line)   #use regex to find the speaker
 		if res:                          #if someone is talking
