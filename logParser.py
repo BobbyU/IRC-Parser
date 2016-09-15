@@ -40,7 +40,7 @@ def main():
 				throbCounter[name] += throbsInThisLine
 			roostsInThisLine = line.lower().count('roost') #count those roosts
 			roostCount += roostsInThisLine
-			if name.lower() == 'rooster':
+			if name.lower().count('rooster') > 0:
 				roostCounter[name] += (roostsInThisLine - 1)
 				roostCount -= 1
 			else:
