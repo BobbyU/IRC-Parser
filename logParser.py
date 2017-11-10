@@ -1,7 +1,7 @@
 import re
 import os
 import operator
-import datetime
+from datetime import datetime, timedelta
 
 def main():
 	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#dtdgb.log'), 'r')    #find log file
@@ -12,13 +12,21 @@ def main():
 	totalWords = 0
 	throbCount = 0
 	roostCount = 0
+	booshCount = 0
 	throbCounter = {}
 	roostCounter = {}
-	#bPipe = 0
-	print(datetime.datetime.today())
+	booshCounter = {}
+	numOfDays = 0
+	lastTime = datetime.fromordinal(1)
+	print(datetime.today())
 	for line in infile:    #for each line in the log
 		res = re.search("<.*?>", line)   #use regex to find the speaker
-		if res:                          #if someone is talking
+		res2 = re.search("/HELP", line)  #make sure it's not a help line
+		if res and not res2:                          #if someone is talking
+			timestmp = datetime.strptime(line[0:15], "%b %d %H:%M:%S") + timedelta(days = 42369)
+			if timestmp.day != lastTime.day:
+				numOfDays += 1
+				lastTime = timestmp
 			name = res.group(0)[1:-1].lower()    #remove the "brackets" from the string
 			if name in nameFreq:         #if the name is already in the dict
 				nameFreq[name] += 1      #then add one to their 
@@ -26,6 +34,7 @@ def main():
 				nameFreq[name] = 1       #init their place in the dict
 				throbCounter[name] = 0
 				roostCounter[name] = 0
+				booshCounter[name] = 0
 				wordCount[name] = 0
 			totalTalks += 1
 			totalWords += line.split().__len__()
@@ -33,6 +42,8 @@ def main():
 			
 			throbsInThisLine = line.lower().count('throb') #count those throbbers
 			throbCount += throbsInThisLine
+			booshsInThisLine = line.count('BOOSH') +  line.count('HSOOB')#count BOOSH
+			booshCount += booshsInThisLine
 			if name.lower().count('throb') > 0:
 				throbCounter[name] += (throbsInThisLine - 1)
 				throbCount -= 1
@@ -45,18 +56,20 @@ def main():
 				roostCount -= 1
 			else:
 				roostCounter[name] += roostsInThisLine
-		#elif line[13] == "*":
-		#	if line.lower().count('broken pipe') > 0:
-		#		bPipe += 1
+			if name.lower().count('BOOSH') > 0:
+				booshCounter[name] += (booshsInThisLine - 1)
+				booshCount -= 1
+			else:
+				booshCounter[name] += booshsInThisLine
 	
 	for key in nameFreq:    #calculate percentages
 		nameCount[key] = float(nameFreq[key]) / totalTalks
 		
-	print("{} {} {}  Roosts  Throbs".format("Name".ljust(20), "Talks".ljust(13), "Avg Words"))
+	print("{} {} {}  Roosts  Throbs  BOOSHes".format("Name".ljust(20), "Talks".ljust(13), "Avg Words"))
 	for i in range(0,len(nameFreq)):    #print each name and values
 		maxKey = max(nameFreq, key=nameFreq.get)    #get the entry with the most talks
 		if nameCount[maxKey] > 0.01:    #if they've talked enough
-			print("{} {:4} ({:2.2%}) {:9} {:7} {:7}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], (wordCount[maxKey]/nameFreq[maxKey]), roostCounter[maxKey], throbCounter[maxKey]) )
+			print("{} {:4} ({:2.2%}) {:9} {:7} {:7} {:7}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], (wordCount[maxKey]/nameFreq[maxKey]), roostCounter[maxKey], throbCounter[maxKey], booshCounter[maxKey]) )
 			del nameCount[maxKey]
 			del nameFreq[maxKey]
 			del throbCounter[maxKey]
@@ -64,6 +77,9 @@ def main():
 	print("total talks: {}".format(totalTalks) )      # print total talks
 	print("Roost Count: {}".format(roostCount) )    # print roost count
 	print("Throb Count: {}".format(throbCount) )    # print throb count
-	print("Average words per talk: {}\n".format(totalWords/totalTalks) )    # print average words per talk
+	print("BOOSH Count: {}".format(booshCount) )    # print BOOSH count
+	print("Word Count: {}".format(totalWords) )    # print word count
+	print("Average words per talk: {}".format(totalWords/totalTalks) )    # print average words per talk
+	print("Average Talks per day: {}\n".format(totalTalks/numOfDays) )
 
 main()
