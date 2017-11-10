@@ -4,7 +4,7 @@ import operator
 from datetime import datetime, timedelta
 
 def main():
-	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#dtdgb.log'), 'r')    #find log file
+	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#JFDom.log'), 'r')    #find log file
 	nameFreq = {}    #dict with names and number of talks
 	nameCount = {}    #dict with names and percent of talks
 	wordCount = {}    #dict with names and number of words
