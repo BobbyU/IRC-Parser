@@ -4,7 +4,7 @@ import operator
 from datetime import datetime, timedelta
 
 def main():
-	infile = open( os.path.join( os.path.abspath(__file__ + "/../../"), 'GeekShed', '#JFDom.log'), 'r')    #find log file
+	infile = open( os.path.join( os.getenv('APPDATA'), 'HexChat', 'logs', 'GeekShed', '#JFDom.log'), 'r', encoding="utf8")    #find log file
 	nameFreq = {}    #dict with names and number of talks
 	nameCount = {}    #dict with names and percent of talks
 	wordCount = {}    #dict with names and number of words
@@ -65,11 +65,11 @@ def main():
 	for key in nameFreq:    #calculate percentages
 		nameCount[key] = float(nameFreq[key]) / totalTalks
 		
-	print("{} {} {}  Roosts  Throbs  BOOSHes".format("Name".ljust(20), "Talks".ljust(13), "Avg Words"))
+	print("{} {} {}  Roosts  Throbs  BOOSHes".format("Name".ljust(20), "Talks".ljust(15), "Avg Words"))
 	for i in range(0,len(nameFreq)):    #print each name and values
 		maxKey = max(nameFreq, key=nameFreq.get)    #get the entry with the most talks
 		if nameCount[maxKey] > 0.01:    #if they've talked enough
-			print("{} {:4} ({:2.2%}) {:9} {:7} {:7} {:7}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], (wordCount[maxKey]/nameFreq[maxKey]), roostCounter[maxKey], throbCounter[maxKey], booshCounter[maxKey]) )
+			print("{} {:4} ({:6.2%})   {:8.4F}    {:2}      {:2}      {:2}".format(maxKey.ljust(20), nameFreq[maxKey], nameCount[maxKey], (wordCount[maxKey]/nameFreq[maxKey]), roostCounter[maxKey], throbCounter[maxKey], booshCounter[maxKey]) )
 			del nameCount[maxKey]
 			del nameFreq[maxKey]
 			del throbCounter[maxKey]
@@ -79,7 +79,7 @@ def main():
 	print("Throb Count: {}".format(throbCount) )    # print throb count
 	print("BOOSH Count: {}".format(booshCount) )    # print BOOSH count
 	print("Word Count: {}".format(totalWords) )    # print word count
-	print("Average words per talk: {}".format(totalWords/totalTalks) )    # print average words per talk
-	print("Average Talks per day: {}\n".format(totalTalks/numOfDays) )
+	print("Average words per talk: {:.4}".format(totalWords/totalTalks) )    # print average words per talk
+	print("Average Talks per day: {:.4}\n".format(totalTalks/numOfDays) )
 
 main()
